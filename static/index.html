@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <form id="calc-form" class="calculator" autocomplete="off">
+      <section class="display-panel" aria-labelledby="calculator-title">
+        <div class="display-topline">
+          <p class="eyebrow">FastAPI Calculator</p>
+          <span class="status-pill">Live API</span>
+        </div>
+
+        <h1 id="calculator-title">Aesthetic Calculator</h1>
+        <p class="subtitle">A cleaner calculator layout with tactile keys and instant server-backed results.</p>
+
+        <label class="sr-only" for="expression">Expression</label>
+        <input
+          id="expression"
+          name="expression"
+          class="display-input"
+          type="text"
+          inputmode="decimal"
+          placeholder="(12 + 4) * 3 / 2"
+          required
+        />
+
+        <div class="display-meta" aria-live="polite">
+          <div>
+            <div class="meta-label">Result</div>
+            <div id="result-value" class="result-value">0</div>
+          </div>
+          <div class="hint">Use +, -, *, /, %, and pow</div>
+        </div>
+
+        <p id="error-message" class="error" role="alert"></p>
+      </section>
+
+      <section class="keypad" aria-label="Calculator keypad">
+        <button type="button" class="key key-function" data-action="clear">AC</button>
+        <button type="button" class="key key-function" data-action="backspace">DEL</button>
+        <button type="button" class="key key-function" data-value="(">(</button>
+        <button type="button" class="key key-operator" data-value=")">)</button>
+
+        <button type="button" class="key key-number" data-value="7">7</button>
+        <button type="button" class="key key-number" data-value="8">8</button>
+        <button type="button" class="key key-number" data-value="9">9</button>
+        <button type="button" class="key key-operator" data-value="/">/</button>
+
+        <button type="button" class="key key-number" data-value="4">4</button>
+        <button type="button" class="key key-number" data-value="5">5</button>
+        <button type="button" class="key key-number" data-value="6">6</button>
+        <button type="button" class="key key-operator" data-value="*">*</button>
+
+        <button type="button" class="key key-number" data-value="1">1</button>
+        <button type="button" class="key key-number" data-value="2">2</button>
+        <button type="button" class="key key-number" data-value="3">3</button>
+        <button type="button" class="key key-operator" data-value="-">-</button>
+
+        <button type="button" class="key key-number key-zero" data-value="0">0</button>
+        <button type="button" class="key key-number" data-value=".">.</button>
+        <button type="button" class="key key-operator" data-value="%">%</button>
+        <button type="button" class="key key-operator" data-value="+">+</button>
+
+        <button type="button" class="key key-function key-wide" data-value="**">pow</button>
+        <button type="submit" class="key key-equals key-wide">=</button>
+      </section>
+    </form>
+  </main>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
