@@ -257,4 +257,185 @@ h1 {
     min-height: 60px;
     border-radius: 18px;
   }
+
+  .history-panel {
+    max-height: 220px;
+  }
+}
+
+/* ── History Panel ── */
+
+.history-panel {
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+  color: var(--text);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 280px;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.history-title {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(244, 239, 232, 0.58);
+}
+
+.history-clear-all {
+  background: none;
+  border: 1px solid rgba(255, 138, 61, 0.3);
+  border-radius: 999px;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.history-clear-all:hover {
+  background: rgba(255, 138, 61, 0.1);
+  border-color: var(--accent);
+}
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.history-empty {
+  margin: 0;
+  padding: 18px;
+  text-align: center;
+  color: rgba(244, 239, 232, 0.36);
+  font-size: 0.88rem;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 14px;
+  transition: background 120ms ease;
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.history-expr {
+  background: none;
+  border: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  transition: background 120ms ease;
+}
+
+.history-expr:hover {
+  background: rgba(255, 138, 61, 0.1);
+}
+
+.history-expr-text {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-result {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.history-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.history-time {
+  color: rgba(244, 239, 232, 0.38);
+  font-size: 0.75rem;
+}
+
+.history-copy,
+.history-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.history-copy {
+  color: rgba(244, 239, 232, 0.5);
+}
+
+.history-copy:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.history-delete {
+  color: rgba(244, 239, 232, 0.4);
+}
+
+.history-delete:hover {
+  background: rgba(255, 100, 80, 0.15);
+  color: var(--error);
+}
+
+.history-copy:focus-visible,
+.history-delete:focus-visible,
+.history-clear-all:focus-visible,
+.history-expr:focus-visible {
+  outline: 2px solid rgba(255, 138, 61, 0.8);
+  outline-offset: 2px;
 }

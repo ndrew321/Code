@@ -72,6 +72,15 @@
         <button type="button" class="key key-function key-wide" data-value="**">pow</button>
         <button type="submit" class="key key-equals key-wide">=</button>
       </section>
+
+      <section class="history-panel" id="history-panel" aria-label="Calculation history">
+        <div class="history-header">
+          <h2 class="history-title">History</h2>
+          <button type="button" id="clear-all-history" class="history-clear-all">Clear All</button>
+        </div>
+        <ul class="history-list" id="history-list" role="list" aria-live="polite"></ul>
+        <p class="history-empty" id="history-empty" hidden>No calculations yet.</p>
+      </section>
     </form>
   </main>
 
