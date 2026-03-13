@@ -3,6 +3,12 @@ const expressionInput = document.getElementById("expression");
 const resultValue = document.getElementById("result-value");
 const errorMessage = document.getElementById("error-message");
 const keypad = document.querySelector(".keypad");
+const historyList = document.getElementById("history-list");
+const historyEmpty = document.getElementById("history-empty");
+const clearAllBtn = document.getElementById("clear-all-history");
+
+const HISTORY_KEY = "calc_history";
+const HISTORY_MAX = 50;
 
 function insertAtCursor(value) {
   const start = expressionInput.selectionStart ?? expressionInput.value.length;
@@ -19,6 +25,101 @@ function insertAtCursor(value) {
 function updateResultDisplay(value) {
   resultValue.textContent = value;
 }
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(entries) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+}
+
+function formatTimestamp(iso) {
+  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function renderHistory() {
+  const entries = loadHistory();
+  historyList.innerHTML = "";
+
+  if (entries.length === 0) {
+    historyEmpty.hidden = false;
+    return;
+  }
+
+  historyEmpty.hidden = true;
+  entries.forEach((entry, index) => {
+    const li = document.createElement("li");
+    li.className = "history-item";
+    li.innerHTML = `
+      <button type="button" class="history-expr" data-expression="${escapeHtml(entry.expression)}" title="Reuse expression">
+        <span class="history-expr-text">${escapeHtml(entry.expression)}</span>
+        <span class="history-result">= ${escapeHtml(String(entry.result))}</span>
+      </button>
+      <div class="history-actions">
+        <span class="history-time">${escapeHtml(formatTimestamp(entry.timestamp))}</span>
+        <button type="button" class="history-copy" data-expression="${escapeHtml(entry.expression)}" title="Copy expression" aria-label="Copy expression">⧉</button>
+        <button type="button" class="history-delete" data-index="${index}" title="Remove entry" aria-label="Remove entry">✕</button>
+      </div>`;
+    historyList.appendChild(li);
+  });
+}
+
+function addToHistory(expression, result) {
+  const entries = loadHistory();
+  entries.unshift({ expression, result, timestamp: new Date().toISOString() });
+  if (entries.length > HISTORY_MAX) {
+    entries.length = HISTORY_MAX;
+  }
+  saveHistory(entries);
+  renderHistory();
+}
+
+historyList.addEventListener("click", (event) => {
+  const exprBtn = event.target.closest(".history-expr");
+  if (exprBtn) {
+    expressionInput.value = exprBtn.dataset.expression;
+    expressionInput.focus();
+    const len = expressionInput.value.length;
+    expressionInput.setSelectionRange(len, len);
+    return;
+  }
+
+  const copyBtn = event.target.closest(".history-copy");
+  if (copyBtn) {
+    navigator.clipboard.writeText(copyBtn.dataset.expression).then(() => {
+      const original = copyBtn.textContent;
+      copyBtn.textContent = "✓";
+      setTimeout(() => { copyBtn.textContent = original; }, 1200);
+    }).catch(() => {});
+    return;
+  }
+
+  const deleteBtn = event.target.closest(".history-delete");
+  if (deleteBtn) {
+    const entries = loadHistory();
+    entries.splice(Number(deleteBtn.dataset.index), 1);
+    saveHistory(entries);
+    renderHistory();
+  }
+});
+
+clearAllBtn.addEventListener("click", () => {
+  saveHistory([]);
+  renderHistory();
+});
 
 keypad.addEventListener("click", (event) => {
   const key = event.target.closest("button");
@@ -95,8 +196,11 @@ form.addEventListener("submit", async (event) => {
     }
 
     updateResultDisplay(String(payload.result));
+    addToHistory(expression, payload.result);
   } catch (error) {
     updateResultDisplay("0");
     errorMessage.textContent = error.message;
   }
 });
+
+renderHistory();
